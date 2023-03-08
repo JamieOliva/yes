@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<head>
+<title>
+    Task 3
+</title>
+</head>
+
+<body>
+    <div id="main">
+        <div id="forms">
+            <div id="productNameDiv">
+                <label for="products"> Product name</label>
+                <select id="products" onchange="priceChange()"> </select>
+            </div>
+            <div id="quantityDiv">
+            <form>
+                <label for="quantityInput"> Quantity</label>
+                <input id="quantityInput" name="quantity" type="number" min="1" max="99"> 
+            </form>
+            </div>
+            <div id="priceDiv">
+                <label for="priceInput"> Price</label>
+                <input id="priceInput" name="price" disabled> 
+            </div>
+            <button id="addCartButton" onclick="main()">
+                press me
+            </button>
+            <form>
+                <input id="newFruitName" type="text">
+                <input id='newFruitValue' type="text">
+            </form>
+             <button id="addNewFruit" onclick="adding()">
+                press me to add
+             </button>
+            <hr>
+            <table id="shoppingTable">
+                <caption> 
+                    INVOICE
+                </caption>
+                <tr>
+                  <th>No</th>
+                  <th>Product Name</th>
+                  <th>Quantity</th>
+                  <th>Price per Item</th>
+                  <th>Total</th>
+                </tr>
+
+              </table> 
+              <p id="greatSuccess">
+               
+              </p>
+        </div>
+    </div>
+</body>
+
+<script>
+    var count = 0;
+    let list = document.getElementById("products");
+    let shopping = document.getElementById("shoppingTable");
+    let products = [
+        {
+           name : 'Apple',
+           price : '10',
+        },
+        {
+           name : 'banana',
+           price : '20',
+        },
+        {
+           name : 'orange',
+           price : '30',
+        },
+    ]
+function adding(){
+    let newFruitName = document.getElementById("newFruitName").value
+    let newFruitValue = document.getElementById('newFruitValue').value
+    let newFruit = {name: newFruitName, price: newFruitValue }
+    products.push(newFruit)
+    let lastElement = products[products.length -1]
+    let update = document.createElement('option');
+    update.text = newFruit.name
+    update.value = newFruit.price
+    list.appendChild(update);
+}
+for (let i = 0; i < products.length; i++) {
+  let option = document.createElement('option');
+  option.value = products[i].price;
+  option.text = products[i].name;
+  list.appendChild(option);
+ }
+let XX = 0;
+function main(){
+    const quantity = document.getElementById('quantityInput').value;
+    const name = document.getElementById('products');
+    const shoppingTable = document.getElementById('shoppingTable');
+    let nameRead = name.options[name.selectedIndex].text ;
+    let priceRead = name.options[name.selectedIndex].value;
+    const priceTotal = quantity * priceRead;
+    let invoicePart = [count,nameRead,quantity,priceRead,priceTotal];
+    price(priceTotal,invoicePart)
+}
+function price(priceTotal,invoicePart){
+    counting()
+    let tr = document.createElement('tr');
+    shoppingTable.appendChild(tr);
+    for (let s = 0; s < invoicePart.length; s++){
+    let td = document.createElement('td');
+    tr.appendChild(td);
+    td.innerHTML = invoicePart[s];
+    }
+    XX += priceTotal
+    document.getElementById('greatSuccess').innerHTML = XX
+    console.log(XX)
+}
+function counting(){
+        count += 1;
+        return count;
+    }
+function priceChange(){
+    const name = document.getElementById('products');
+    let priceFinal = name.options[name.selectedIndex].value;
+    document.getElementById('priceInput').value = priceFinal;
+}
+</script>
+
+<style>
+#main{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    
+}
+</style>
